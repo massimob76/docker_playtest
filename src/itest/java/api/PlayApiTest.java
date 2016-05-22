@@ -13,15 +13,14 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class PlayApiTest {
 
     private static final String URI = "http://localhost:8090";
-    private static final String PING_PATH = "/ping";
 
     @Test
     public void serverIsUpTest() {
         Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(URI).path(PING_PATH);
+        WebTarget target = client.target(URI).path("/");
         Response response = target.request().get();
         assertThat(response.getStatus(), is(200));
-        assertThat(response.readEntity(String.class), is("pong"));
+        assertThat(response.readEntity(String.class), is("server is up!"));
     }
 
 }
