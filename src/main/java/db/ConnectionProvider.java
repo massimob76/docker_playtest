@@ -1,5 +1,6 @@
 package db;
 
+import conf.PropertiesReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,14 +12,14 @@ public class ConnectionProvider {
 
     private static final String DRIVER = "com.mysql.jdbc.Driver";
     private static final Logger LOGGER = LoggerFactory.getLogger(ConnectionProvider.class);
-    private static final String CONNECTION_STRING = "jdbc:mysql://127.0.0.1:3306/playtest?user=midasdev&password=midasdev";
+    private static final String CONNECTION_STRING_KEY = "dbConnectionString";
     private final Connection conn;
 
-    public ConnectionProvider() throws ClassNotFoundException, IllegalAccessException, InstantiationException {
+    public ConnectionProvider(PropertiesReader propertiesReader) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
         Class.forName(DRIVER).newInstance();
         Connection conn;
         try {
-            conn = DriverManager.getConnection(CONNECTION_STRING);
+            conn = DriverManager.getConnection(propertiesReader.getProperty(CONNECTION_STRING_KEY));
         } catch (SQLException e) {
             conn = null;
             LOGGER.error("SQL exception: {}", e);
