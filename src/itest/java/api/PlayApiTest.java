@@ -4,7 +4,6 @@ import org.junit.Test;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 
@@ -19,10 +18,10 @@ public class PlayApiTest {
     @Test
     public void serverIsUpTest() {
         Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(URI).path(PING_PATH);
+        WebTarget target = client.target(URI).path("/");
         Response response = target.request().get();
         assertThat(response.getStatus(), is(200));
-        assertThat(response.readEntity(String.class), is("pong"));
+        assertThat(response.readEntity(String.class), is("server is up!"));
     }
 
 }

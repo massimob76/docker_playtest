@@ -2,6 +2,8 @@
 apply plugin: 'java'
 apply plugin: 'jetty'
 
+jettyRun.contextPath = '';
+
 repositories {
     jcenter()
 }
@@ -20,14 +22,14 @@ sourceSets {
     }
 }
 
-import org.gradle.api.plugins.jetty.internal.Monitor
-
+// make sure you disable gradle daemon when running integration test
+// as the jetty server won't stop
+// https://issues.gradle.org/browse/GRADLE-2263
 task integrationTest(type: Test) {
     testClassesDir = sourceSets.itest.output.classesDir
     classpath = sourceSets.itest.runtimeClasspath
 
     doFirst {
-        jettyRun.contextPath = '/';
         jettyRun.httpPort = 8090
         jettyRun.daemon = true
         jettyRun.stopPort = 8091
@@ -44,8 +46,11 @@ task integrationTest(type: Test) {
 check.dependsOn integrationTest
 
 dependencies {
-    compile 'org.slf4j:slf4j-api:1.7.12'
+    compile 'org.slf4j:slf4j-api:1.7.21'
+    compile 'org.slf4j:slf4j-simple:1.7.21'
     compile 'org.glassfish.jersey.core:jersey-server:2.22.2'
+    compile 'org.glassfish.jersey.containers:jersey-container-jetty-servlet:2.22.2'
+    compile 'mysql:mysql-connector-java:5.1.39'
 
     testCompile 'junit:junit:4.12'
     testCompile 'org.glassfish.jersey.core:jersey-client:2.22.2'
