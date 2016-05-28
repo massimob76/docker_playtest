@@ -11,16 +11,17 @@ import static org.junit.Assert.*;
 
 public class PropertiesReaderTest {
 
+    private static final String ITEST_PROPERTIES = "iTest.properties";
     private PropertiesReader propertiesReader;
 
     @Before
     public void setUp() throws IOException {
-        propertiesReader = new PropertiesReader();
+        propertiesReader = new PropertiesReader(ITEST_PROPERTIES);
     }
 
     @Test
     public void propertiesAreReadCorrectly() {
-        assertThat(propertiesReader.getProperty("projectName"), is("docker_playtest"));
+        assertThat(propertiesReader.getProperty("test"), is("true"));
     }
 
     @Test

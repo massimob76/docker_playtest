@@ -1,4 +1,4 @@
-package api;
+package servlet;
 
 import org.junit.Test;
 
@@ -10,10 +10,9 @@ import javax.ws.rs.core.Response;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-public class PlayApiTest {
+public class Playtest {
 
     private static final String URI = "http://localhost:8090";
-    private static final String PING_PATH = "/ping";
 
     @Test
     public void serverIsUpTest() {

@@ -1,4 +1,4 @@
-package api;
+package servlet;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -13,12 +13,12 @@ import java.io.IOException;
 
 @Path("/")
 @Produces(MediaType.TEXT_PLAIN)
-public class PlayApi {
+public class PlaytestServlet {
 
     private final CounterDAO counterDAO;
 
-    public PlayApi() throws IllegalAccessException, InstantiationException, ClassNotFoundException, IOException {
-        counterDAO = new CounterDAO(new ConnectionProvider(new PropertiesReader()));
+    public PlaytestServlet() throws IllegalAccessException, InstantiationException, ClassNotFoundException, IOException {
+        counterDAO = new CounterDAO(new ConnectionProvider(new PropertiesReader("config.properties")));
     }
 
     @GET
