@@ -53,7 +53,7 @@ task integrationTest(type: Test) {
 
 // ensure server gets stopped even when integration tests are failing
 gradle.taskGraph.afterTask { task, TaskState state ->
-    if (task == integrationTest) {
+    if (task == integrationTest && file(".pid.lock").exists()) {
         println "stopping server"
         killProcess.execute()
     }
