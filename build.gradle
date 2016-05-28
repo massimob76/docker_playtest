@@ -1,3 +1,7 @@
+plugins {
+    id "com.wiredforcode.spawn" version "0.6.0"
+}
+
 apply plugin: 'java'
 apply plugin: 'application'
 
@@ -21,29 +25,6 @@ sourceSets {
     }
 }
 
-// make sure you disable gradle daemon when running integration test
-// as the jetty server won't stop
-// https://issues.gradle.org/browse/GRADLE-2263
-task integrationTest(type: Test) {
-//    testClassesDir = sourceSets.itest.output.classesDir
-//    classpath = sourceSets.itest.runtimeClasspath
-//
-//    doFirst {
-//        jettyRun.httpPort = 8090
-//        jettyRun.daemon = true
-//        jettyRun.stopPort = 8091
-//        jettyRun.stopKey = 'stopKey'
-//        jettyRun.execute()
-//    }
-//    doLast {
-//        jettyStop.stopPort = 8091
-//        jettyStop.stopKey = 'stopKey'
-//        jettyStop.execute()
-//    }
-}
-
-check.dependsOn integrationTest
-
 dependencies {
     compile 'org.slf4j:slf4j-api:1.7.21'
     compile 'org.slf4j:slf4j-simple:1.7.21'
@@ -54,3 +35,30 @@ dependencies {
     testCompile 'junit:junit:4.12'
     testCompile 'org.glassfish.jersey.core:jersey-client:2.22.2'
 }
+
+spawnProcess {
+    command "java -cp ${sourceSets.main.runtimeClasspath.asPath} Startup iTest.properties"
+    ready 'Started Application'
+}
+
+task integrationTest(type: Test) {
+    testClassesDir = sourceSets.itest.output.classesDir
+    classpath = sourceSets.itest.runtimeClasspath
+
+    doFirst {
+        println "starting server"
+        spawnProcess.execute()
+    }
+}
+
+// ensure server gets stopped even when integration tests are failing
+gradle.taskGraph.afterTask { task, TaskState state ->
+    if (task == integrationTest) {
+        println "stopping server"
+        killProcess.execute()
+    }
+}
+
+check.dependsOn integrationTest
+
+

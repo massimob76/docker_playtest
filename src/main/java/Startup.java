@@ -3,12 +3,16 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.glassfish.jersey.servlet.ServletContainer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Startup {
 
     private static final String DEFAULT_PROPERTY_FILE = "config.properties";
     private static final String SERVER_PORT = "serverPort";
     private static final String SERVER_DAEMON = "serverDaemon";
+    private static final String STARTED_APPLICATION_FLAG = "Started Application";
+    private static final Logger LOGGER = LoggerFactory.getLogger(Startup.class);
 
     public void start(String propertyFile) throws Exception {
         PropertiesReader propertiesReader = new PropertiesReader(propertyFile);
@@ -25,13 +29,11 @@ public class Startup {
 
         server.start();
         server.dumpStdErr();
+        LOGGER.info(STARTED_APPLICATION_FLAG);
+
         if (!isDaemon) {
             server.join();
         }
-    }
-
-    public void stop() {
-
     }
 
     public static void main(String[] args) throws Exception {
