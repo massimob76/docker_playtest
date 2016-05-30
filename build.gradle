@@ -31,6 +31,7 @@ dependencies {
     compile 'org.glassfish.jersey.core:jersey-server:2.22.2'
     compile 'org.glassfish.jersey.containers:jersey-container-jetty-servlet:2.22.2'
     compile 'mysql:mysql-connector-java:5.1.39'
+    compile 'com.google.inject:guice:4.0'
 
     testCompile 'junit:junit:4.12'
     testCompile 'org.glassfish.jersey.core:jersey-client:2.22.2'

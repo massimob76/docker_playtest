@@ -1,5 +1,6 @@
 package db;
 
+import com.google.inject.Inject;
 import conf.PropertiesReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +16,7 @@ public class ConnectionProvider {
     private static final String CONNECTION_STRING_KEY = "dbConnectionString";
     private final Connection conn;
 
+    @Inject
     public ConnectionProvider(PropertiesReader propertiesReader) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
         Class.forName(DRIVER).newInstance();
         Connection conn;

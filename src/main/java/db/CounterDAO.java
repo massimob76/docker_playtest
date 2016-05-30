@@ -1,5 +1,6 @@
 package db;
 
+import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,6 +13,7 @@ public class CounterDAO {
     private final Connection conn;
     private static final Logger LOGGER = LoggerFactory.getLogger(CounterDAO.class);
 
+    @Inject
     public CounterDAO(ConnectionProvider connectionProvider) {
         conn = connectionProvider.getConnetion();
     }

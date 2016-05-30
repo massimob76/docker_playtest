@@ -1,5 +1,7 @@
 package conf;
 
+import com.google.inject.Inject;
+
 import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.FileSystems;
@@ -11,6 +13,7 @@ public class PropertiesReader {
 
     private final Properties properties;
 
+    @Inject
     public PropertiesReader(String propertyFile) throws IOException {
         Path path = FileSystems.getDefault().getPath(propertyFile);
         Reader reader = Files.newBufferedReader(path);
