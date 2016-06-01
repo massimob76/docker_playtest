@@ -4,9 +4,11 @@ import conf.PropertiesReader;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.servlet.ServletContainer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import servlet.PlaytestServlet;
 
 public class Startup {
 
@@ -26,11 +28,14 @@ public class Startup {
 
         Server server = new Server(port);
 
+        PlaytestServlet playtestServlet = injector.getInstance(PlaytestServlet.class);
+        ResourceConfig resourceConfig = new ResourceConfig().registerInstances(playtestServlet);
+
         ServletContextHandler context = new ServletContextHandler();
         server.setHandler(context);
 
-        ServletHolder servletHolder = context.addServlet(ServletContainer.class, "/*");
-        servletHolder.setInitParameter("jersey.config.server.provider.packages", "servlet");
+        ServletHolder servletHolder = new ServletHolder(new ServletContainer(resourceConfig));
+        context.addServlet(servletHolder, "/*");
 
         server.start();
         server.dumpStdErr();

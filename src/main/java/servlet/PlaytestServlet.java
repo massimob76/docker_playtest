@@ -1,12 +1,10 @@
 package servlet;
 
-import conf.PropertiesReader;
-import db.ConnectionProvider;
+import com.google.inject.Inject;
 import db.CounterDAO;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import java.io.IOException;
 
 @Path("/")
 @Produces(MediaType.TEXT_PLAIN)
@@ -14,8 +12,9 @@ public class PlaytestServlet {
 
     private final CounterDAO counterDAO;
 
-    public PlaytestServlet() throws IllegalAccessException, InstantiationException, ClassNotFoundException, IOException {
-        counterDAO = new CounterDAO(new ConnectionProvider(new PropertiesReader("config.properties")));
+    @Inject
+    public PlaytestServlet(CounterDAO counterDAO) {
+        this.counterDAO = counterDAO;
     }
 
     @GET
