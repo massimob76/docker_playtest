@@ -10,11 +10,11 @@ import java.io.IOException;
 
 @Path("/")
 @Produces(MediaType.TEXT_PLAIN)
-public class PlayttestServlet {
+public class PlaytestServlet {
 
     private final CounterDAO counterDAO;
 
-    public PlayttestServlet() throws IllegalAccessException, InstantiationException, ClassNotFoundException, IOException {
+    public PlaytestServlet() throws IllegalAccessException, InstantiationException, ClassNotFoundException, IOException {
         counterDAO = new CounterDAO(new ConnectionProvider(new PropertiesReader("config.properties")));
     }
 
