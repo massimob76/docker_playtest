@@ -1,8 +1,5 @@
 package servlet;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-
 import conf.PropertiesReader;
 import db.ConnectionProvider;
 import db.CounterDAO;
@@ -13,11 +10,11 @@ import java.io.IOException;
 
 @Path("/")
 @Produces(MediaType.TEXT_PLAIN)
-public class PlaytestServlet {
+public class PlayttestServlet {
 
     private final CounterDAO counterDAO;
 
-    public PlaytestServlet() throws IllegalAccessException, InstantiationException, ClassNotFoundException, IOException {
+    public PlayttestServlet() throws IllegalAccessException, InstantiationException, ClassNotFoundException, IOException {
         counterDAO = new CounterDAO(new ConnectionProvider(new PropertiesReader("config.properties")));
     }
 
