@@ -54,12 +54,6 @@ task integrationTest(type: Test) {
     }
 }
 
-task startH2Db(type: JavaExec) {
-    main = 'db.H2Db'
-    classpath = sourceSets.itest.runtimeClasspath
-//    classpath += configurations.testCompile.dependencies
-}
-
 // ensure server gets stopped even when integration tests are failing
 gradle.taskGraph.afterTask { task, TaskState state ->
     if (task == integrationTest && file(".pid.lock").exists()) {
