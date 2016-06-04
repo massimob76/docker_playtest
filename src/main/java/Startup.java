@@ -20,7 +20,7 @@ public class Startup {
         PropertiesReader propertiesReader = new PropertiesReader(propertyFile);
         Injector injector = Guice.createInjector(new PlaytestModule(propertiesReader));
 
-        boolean useH2DB = propertiesReader.getBooleanProperty(USE_H2_DB);
+        boolean useH2DB = propertiesReader.getBooleanProperty(USE_H2_DB, false);
         if (useH2DB) {
             startH2DBServer();
         }
