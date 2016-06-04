@@ -22,6 +22,7 @@ public class PlaytestServlet {
         return "server is up!";
     }
 
+    //  curl http://localhost:8080/counter
     @Path("/counter")
     @GET
     public int getCounter() {
@@ -42,7 +43,7 @@ public class PlaytestServlet {
         counterDAO.reset();
     }
 
-    //  curl -v -X PUT http://localhost:8080/counter/reset
+    //  curl -v -X PUT http://localhost:8080/counter/increment
     @Path("/counter/increment")
     @PUT
     public int incrementCounter() {
