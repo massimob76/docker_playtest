@@ -13,7 +13,8 @@ public class CounterDAO {
             "INSERT INTO Playtest SELECT * FROM (SELECT 'counter', 0) x WHERE NOT EXISTS(SELECT * FROM Playtest);";
 
     private static final String GET_COUNTER_STMT = "SELECT value FROM Playtest WHERE name = 'counter';";
-    private static final String UPDATE_COUNTER_STMT = "UPDATE Playtest SET value = ? where name = 'counter';";
+    private static final String UPDATE_COUNTER_STMT = "UPDATE Playtest SET value = ? WHERE name = 'counter';";
+    private static final String INCREMENT_COUNTER_STMT = "UPDATE Playtest set value = value + 1 WHERE name = 'counter';";
     private static final Logger LOGGER = LoggerFactory.getLogger(CounterDAO.class);
 
     private final ConnectionProvider connectionProvider;
@@ -30,7 +31,7 @@ public class CounterDAO {
             rs.next();
             return rs.getInt("value");
         } catch (SQLException e) {
-            LOGGER.error("exception while fetching data from DB", e);
+            LOGGER.error("exception while getting counter value", e);
             return 0;
         }
     }
@@ -41,6 +42,14 @@ public class CounterDAO {
             stmt.executeUpdate();
         } catch (SQLException e) {
             LOGGER.error("exception while updating counter", e);
+        }
+    }
+
+    public void increment() {
+        try (Connection conn = connectionProvider.getConnection(); Statement stmt = conn.createStatement()) {
+            stmt.executeUpdate(INCREMENT_COUNTER_STMT);
+        } catch (SQLException e) {
+            LOGGER.error("exception while incrementing counter", e);
         }
     }
 

@@ -22,12 +22,16 @@ public class CounterDAOTest {
     }
 
     @Test
-    public void testResetGetUpdate() {
+    public void testResetGetUpdateIncrement() {
         counterDAO.reset();
         assertThat(counterDAO.get(), is(0));
         counterDAO.update(5);
         assertThat(counterDAO.get(), is(5));
         counterDAO.update(2);
         assertThat(counterDAO.get(), is(2));
+        counterDAO.increment();
+        assertThat(counterDAO.get(), is(3));
+        counterDAO.increment();
+        assertThat(counterDAO.get(), is(4));
     }
 }
