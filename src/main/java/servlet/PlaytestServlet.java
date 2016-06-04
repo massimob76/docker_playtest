@@ -41,4 +41,12 @@ public class PlaytestServlet {
     public void resetCounter() {
         counterDAO.reset();
     }
+
+    //  curl -v -X PUT http://localhost:8080/counter/reset
+    @Path("/counter/increment")
+    @PUT
+    public int incrementCounter() {
+        counterDAO.increment();
+        return counterDAO.get();
+    }
 }

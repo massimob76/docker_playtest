@@ -10,7 +10,7 @@ import javax.ws.rs.core.Response;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-public class Playtest {
+public class PlaytestServletTest {
 
     private static final String URI = "http://localhost:8090";
 
