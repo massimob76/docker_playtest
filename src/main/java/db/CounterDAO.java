@@ -8,13 +8,12 @@ import java.sql.*;
 
 public class CounterDAO {
 
-    private static final String CREATE_AND_POPULATE_COUNTER_STMT =
-            "CREATE TABLE IF NOT EXISTS Playtest (name VARCHAR(10) NOT NULL, value int NOT NULL, PRIMARY KEY (name));" +
-            "INSERT INTO Playtest SELECT * FROM (SELECT 'counter', 0) x WHERE NOT EXISTS(SELECT * FROM Playtest);";
+    private static final String CREATE_COUNTER = "CREATE TABLE IF NOT EXISTS Playtest (name VARCHAR(10) NOT NULL, value int NOT NULL, PRIMARY KEY (name));";
+    private static final String POPULATE_COUNTER = "INSERT INTO Playtest SELECT * FROM (SELECT 'counter', 0) x WHERE NOT EXISTS(SELECT * FROM Playtest);";
 
-    private static final String GET_COUNTER_STMT = "SELECT value FROM Playtest WHERE name = 'counter';";
-    private static final String UPDATE_COUNTER_STMT = "UPDATE Playtest SET value = ? WHERE name = 'counter';";
-    private static final String INCREMENT_COUNTER_STMT = "UPDATE Playtest set value = value + 1 WHERE name = 'counter';";
+    private static final String GET_COUNTER = "SELECT value FROM Playtest WHERE name = 'counter';";
+    private static final String UPDATE_COUNTER = "UPDATE Playtest SET value = ? WHERE name = 'counter';";
+    private static final String INCREMENT_COUNTER = "UPDATE Playtest set value = value + 1 WHERE name = 'counter';";
     private static final Logger LOGGER = LoggerFactory.getLogger(CounterDAO.class);
 
     private final ConnectionProvider connectionProvider;
@@ -27,7 +26,7 @@ public class CounterDAO {
 
     public int get() {
         try (Connection conn = connectionProvider.getConnection(); Statement stmt = conn.createStatement()) {
-            ResultSet rs = stmt.executeQuery(GET_COUNTER_STMT);
+            ResultSet rs = stmt.executeQuery(GET_COUNTER);
             rs.next();
             return rs.getInt("value");
         } catch (SQLException e) {
@@ -37,7 +36,7 @@ public class CounterDAO {
     }
 
     public void update(int newIdx) {
-        try (Connection conn = connectionProvider.getConnection(); PreparedStatement stmt = conn.prepareStatement(UPDATE_COUNTER_STMT)) {
+        try (Connection conn = connectionProvider.getConnection(); PreparedStatement stmt = conn.prepareStatement(UPDATE_COUNTER)) {
             stmt.setInt(1, newIdx);
             stmt.executeUpdate();
         } catch (SQLException e) {
@@ -47,7 +46,7 @@ public class CounterDAO {
 
     public void increment() {
         try (Connection conn = connectionProvider.getConnection(); Statement stmt = conn.createStatement()) {
-            stmt.executeUpdate(INCREMENT_COUNTER_STMT);
+            stmt.executeUpdate(INCREMENT_COUNTER);
         } catch (SQLException e) {
             LOGGER.error("exception while incrementing counter", e);
         }
@@ -59,7 +58,8 @@ public class CounterDAO {
 
     private void createTableIfNotExistsAndPopulateIt() {
         try (Connection conn = connectionProvider.getConnection(); Statement stmt = conn.createStatement()) {
-            stmt.executeUpdate(CREATE_AND_POPULATE_COUNTER_STMT);
+            stmt.executeUpdate(CREATE_COUNTER);
+            stmt.executeUpdate(POPULATE_COUNTER);
         } catch (SQLException e) {
             LOGGER.error("exception while creating Counter table", e);
         }
