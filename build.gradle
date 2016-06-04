@@ -32,9 +32,11 @@ dependencies {
     compile 'org.glassfish.jersey.containers:jersey-container-jetty-servlet:2.22.2'
     compile 'mysql:mysql-connector-java:5.1.39'
     compile 'com.google.inject:guice:4.0'
+    compile 'com.h2database:h2:1.4.192'
 
     testCompile 'junit:junit:4.12'
     testCompile 'org.glassfish.jersey.core:jersey-client:2.22.2'
+
 }
 
 spawnProcess {
@@ -50,6 +52,12 @@ task integrationTest(type: Test) {
         println "starting server"
         spawnProcess.execute()
     }
+}
+
+task startH2Db(type: JavaExec) {
+    main = 'db.H2Db'
+    classpath = sourceSets.itest.runtimeClasspath
+//    classpath += configurations.testCompile.dependencies
 }
 
 // ensure server gets stopped even when integration tests are failing

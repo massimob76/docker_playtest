@@ -8,49 +8,52 @@ import java.sql.*;
 
 public class CounterDAO {
 
-    private static final String GET_COUNTER_STMT = "SELECT Idx FROM Counter;";
-    private static final String UPDATE_COUNTER_STMT = "UPDATE Counter SET Idx = ?;";
-    private final Connection conn;
+    private static final String CREATE_AND_POPULATE_COUNTER_STMT =
+            "CREATE TABLE IF NOT EXISTS Playtest (name VARCHAR(10) NOT NULL, value int NOT NULL, PRIMARY KEY (name));" +
+            "INSERT INTO Playtest SELECT * FROM (SELECT 'counter', 0) x WHERE NOT EXISTS(SELECT * FROM Playtest);";
+
+    private static final String GET_COUNTER_STMT = "SELECT value FROM Playtest WHERE name = 'counter';";
+    private static final String UPDATE_COUNTER_STMT = "UPDATE Playtest SET value = ? where name = 'counter';";
     private static final Logger LOGGER = LoggerFactory.getLogger(CounterDAO.class);
+
+    private final ConnectionProvider connectionProvider;
 
     @Inject
     public CounterDAO(ConnectionProvider connectionProvider) {
-        conn = connectionProvider.getConnetion();
+        this.connectionProvider = connectionProvider;
+        createTableIfNotExistsAndPopulateIt();
     }
 
     public int get() {
-        try {
-            Statement stmt = conn.createStatement();
+        try (Connection conn = connectionProvider.getConnection(); Statement stmt = conn.createStatement()) {
             ResultSet rs = stmt.executeQuery(GET_COUNTER_STMT);
             rs.next();
-            return rs.getInt("Idx");
+            return rs.getInt("value");
         } catch (SQLException e) {
-            LOGGER.error("exception while fetching data from DB: {}", e);
+            LOGGER.error("exception while fetching data from DB", e);
             return 0;
         }
     }
 
     public void update(int newIdx) {
-        PreparedStatement stmt = null;
-        try {
-            stmt = conn.prepareStatement(UPDATE_COUNTER_STMT);
+        try (Connection conn = connectionProvider.getConnection(); PreparedStatement stmt = conn.prepareStatement(UPDATE_COUNTER_STMT)) {
             stmt.setInt(1, newIdx);
             stmt.executeUpdate();
         } catch (SQLException e) {
-            LOGGER.error("exception while updating counter {}", e);
-        } finally {
-            if (stmt != null) {
-                try {
-                    stmt.close();
-                } catch (SQLException e) {
-                    LOGGER.error("exception while closing statement {}", e);
-                }
-            }
+            LOGGER.error("exception while updating counter", e);
         }
     }
 
     public void reset() {
         update(0);
+    }
+
+    private void createTableIfNotExistsAndPopulateIt() {
+        try (Connection conn = connectionProvider.getConnection(); Statement stmt = conn.createStatement()) {
+            stmt.executeUpdate(CREATE_AND_POPULATE_COUNTER_STMT);
+        } catch (SQLException e) {
+            LOGGER.error("exception while creating Counter table", e);
+        }
     }
 
 }
