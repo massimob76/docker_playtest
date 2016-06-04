@@ -26,4 +26,35 @@ public class PropertiesReader {
         return properties.getProperty(key);
     }
 
+    public boolean getBooleanProperty(String key) {
+        String property = getProperty(key);
+        if (property == null) {
+            throw new MissingConfigurationException(key);
+        }
+        return Boolean.parseBoolean(getProperty(key));
+    }
+
+    public boolean getBooleanProperty(String key, boolean defaultValue) {
+        String property = getProperty(key);
+        return (property == null) ? defaultValue : Boolean.parseBoolean(getProperty(key));
+    }
+
+    public int getIntProperty(String key) {
+        String property = getProperty(key);
+        if (property == null) {
+            throw new MissingConfigurationException(key);
+        }
+        return Integer.parseInt(property);
+    }
+
+    public int getIntProperty(String key, int defaultValue) {
+        String property = getProperty(key);
+        return (property == null) ? defaultValue : Integer.parseInt(property);
+    }
+
+    public static class MissingConfigurationException extends RuntimeException {
+        public MissingConfigurationException(String key) {
+            super("Missing configuration for key " + key);
+        }
+    }
 }

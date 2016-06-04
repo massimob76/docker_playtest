@@ -20,7 +20,7 @@ public class JettyServer {
     }
 
     public void start() throws Exception {
-        int port = Integer.parseInt(propertiesReader.getProperty(SERVER_PORT));
+        int port = propertiesReader.getIntProperty(SERVER_PORT);
 
         server = new Server(port);
         context = new ServletContextHandler();

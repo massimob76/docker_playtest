@@ -20,7 +20,7 @@ public class Startup {
         PropertiesReader propertiesReader = new PropertiesReader(propertyFile);
         Injector injector = Guice.createInjector(new PlaytestModule(propertiesReader));
 
-        boolean useH2DB = Boolean.parseBoolean(propertiesReader.getProperty(USE_H2_DB));
+        boolean useH2DB = propertiesReader.getBooleanProperty(USE_H2_DB);
         if (useH2DB) {
             startH2DBServer();
         }
@@ -44,7 +44,7 @@ public class Startup {
 
         LOGGER.info(STARTED_APPLICATION_FLAG);
 
-        boolean isDaemon = Boolean.parseBoolean(propertiesReader.getProperty(SERVER_DAEMON));
+        boolean isDaemon = propertiesReader.getBooleanProperty(SERVER_DAEMON);
         if (!isDaemon) {
             jettyServer.join();
         }
