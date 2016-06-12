@@ -64,4 +64,8 @@ gradle.taskGraph.afterTask { task, TaskState state ->
 
 check.dependsOn integrationTest
 
+task copyDistForDocker(type: Copy) {
+    from 'build/distributions/docker_playtest.tar', 'conf/docker.properties'
+    into 'docker/dist'
+}
 
