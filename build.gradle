@@ -40,7 +40,7 @@ dependencies {
 }
 
 spawnProcess {
-    command "java -cp ${sourceSets.main.runtimeClasspath.asPath} Startup iTest.properties"
+    command "java -cp ${sourceSets.main.runtimeClasspath.asPath} Startup conf/iTest.properties"
     ready 'Started Application'
 }
 

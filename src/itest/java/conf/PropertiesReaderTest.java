@@ -11,7 +11,7 @@ import static org.junit.Assert.assertThat;
 
 public class PropertiesReaderTest {
 
-    private static final String ITEST_PROPERTIES = "iTest.properties";
+    private static final String ITEST_PROPERTIES = "conf/iTest.properties";
     private PropertiesReader propertiesReader;
 
     @Before

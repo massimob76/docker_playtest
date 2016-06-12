@@ -16,7 +16,7 @@ public class CounterDAOTest {
 
     @Before
     public void setUp() throws IOException, IllegalAccessException, InstantiationException, ClassNotFoundException, SQLException {
-        PropertiesReader propertiesReader = new PropertiesReader("iTest.properties");
+        PropertiesReader propertiesReader = new PropertiesReader("conf/iTest.properties");
         ConnectionProvider connectionProvider = new ConnectionProvider(propertiesReader);
         counterDAO = new CounterDAO(connectionProvider);
     }

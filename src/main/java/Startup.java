@@ -10,7 +10,7 @@ import java.sql.SQLException;
 
 public class Startup {
 
-    private static final String DEFAULT_PROPERTY_FILE = "config.properties";
+    private static final String DEFAULT_PROPERTY_FILE = "conf/default.properties";
     private static final String SERVER_DAEMON = "serverDaemon";
     private static final String STARTED_APPLICATION_FLAG = "Started Application";
     private static final Logger LOGGER = LoggerFactory.getLogger(Startup.class);
