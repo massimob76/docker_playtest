@@ -1,0 +1,15 @@
+version: '2'
+services:
+  web:
+    container_name: playtest
+    build: .
+    ports:
+      - "8080:8080"
+    links:
+      - db
+  db:
+    container_name: mysql
+    image: mysql:latest
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+      - MYSQL_DATABASE=playtest

@@ -26,6 +26,7 @@ public class ConnectionProvider {
     }
 
     public Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(connectionString, userName, password);
+        return (userName == null) ? DriverManager.getConnection(connectionString)
+            : DriverManager.getConnection(connectionString, userName, password);
     }
 }
