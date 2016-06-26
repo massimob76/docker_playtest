@@ -1,8 +1,18 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath "com.avast.gradle:docker-compose-gradle-plugin:0.3.6"
+    }
+}
+
 plugins {
     id "com.wiredforcode.spawn" version "0.6.0"
 }
 
 apply plugin: 'java'
+apply plugin: 'docker-compose'
 apply plugin: 'application'
 
 mainClassName = "Startup"
@@ -65,7 +75,15 @@ gradle.taskGraph.afterTask { task, TaskState state ->
 check.dependsOn integrationTest
 
 task copyDistForDocker(type: Copy) {
+    dependsOn distTar
     from 'build/distributions/docker_playtest.tar', 'conf/docker.properties'
     into 'docker/dist'
 }
+
+dockerCompose {
+    useComposeFiles = ['docker/docker-compose.yml']
+}
+
+composeUp.dependsOn copyDistForDocker
+
 
